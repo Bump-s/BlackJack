@@ -8,14 +8,14 @@ namespace Blackjack
 {
 	class Program
 	{
-		public static Card GetCard()
-		{
-			Card card = new Card();
-			Random random = new Random();
-			card.Value = (Value)random.Next(12);
-			card.Suit = (Suit)random.Next(4);
-			return card;
-		}
+		//public static Card GetCard()
+		//{
+		//	Card card = new Card();
+		//	Random random = new Random();
+		//	card.Value = (Value)random.Next(12);
+		//	card.Suit = (Suit)random.Next(4);
+		//	return card;
+		//}
 
 		public static List<Card> GenerateDeck(List<Card> deck)
 		{
