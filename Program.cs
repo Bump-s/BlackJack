@@ -31,7 +31,7 @@ namespace Blackjack
 			}
 			return deck;
 		}
-
+		//312123123123123123123123
 		public static void ShuffleDeck(List<Card> deck)
 		{
 			Random random = new Random();
