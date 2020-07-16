@@ -25,12 +25,12 @@ namespace Blackjack
 		private void ShuffleDeck(List<Card> deck)
 		{
 			Random random = new Random();
-			for (int i = deck.Count() - 1; i >= 1; i--)
+			for (int deckCounter = deck.Count() - 1; deckCounter >= 1; deckCounter--)
 			{
-				int j = random.Next(i + 1);
-				var temp = deck[j];
-				deck[j] = deck[i];
-				deck[i] = temp;
+				int randomizer = random.Next(deckCounter + 1);
+				var temp = deck[randomizer];
+				deck[randomizer] = deck[deckCounter];
+				deck[deckCounter] = temp;
 			}
 		}
 		private Card GetCard(List<Card> deck)
