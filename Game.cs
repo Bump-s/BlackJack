@@ -8,102 +8,81 @@ namespace Blackjack
 {
 	class Game
 	{
-		private List<Card> GenerateDeck(List<Card> deck)
-		{
-			for (int numberOfValue = 2; numberOfValue < 15; numberOfValue++)
-			{
-				for (int numberOfSuit = 0; numberOfSuit < 4; numberOfSuit++)
-				{
-					Card card = new Card();
-					card.Value = (Value)numberOfValue;
-					card.Suit = (Suit)numberOfSuit;
-					deck.Add(card);
-				}
-			}
-			return deck;
-		}
-		private void ShuffleDeck(List<Card> deck)
-		{
-			Random random = new Random();
-			for (int deckCounter = deck.Count() - 1; deckCounter >= 1; deckCounter--)
-			{
-				int randomizer = random.Next(deckCounter + 1);
-				var temp = deck[randomizer];
-				deck[randomizer] = deck[deckCounter];
-				deck[deckCounter] = temp;
-			}
-		}
-		private Card GetCard(List<Card> deck)
-		{
-			Card container = new Card();
-			ShuffleDeck(deck);
-			container = deck[0];
-			deck.RemoveAt(0);
-			return container;
-		}
-		private Player PlayerGetCard(String name)
-		{
+		private Player FirstHand(String name, Deck deck)
+        {
 			var player = new Player(name);
-			var deck = new List<Card>();
-			GenerateDeck(deck);
-			while (player.Value < 21)
-			{
-				player.AddCard(GetCard(deck));
+            while (player.Hand.Count -1  < 1)
+            {
+				player.AddCard(deck.GetCard());
 				player.CountValue();
 				Console.WriteLine($"{player.Name} got a {player.Hand[player.Hand.Count - 1].Value} of {player.Hand[player.Hand.Count - 1].Suit}");
 			}
 			return player;
 		}
+		private void PlayerGetCard(Player player, Deck deck)
+		{
+			player.AddCard(deck.GetCard());
+			player.CountValue();
+			Console.WriteLine($"{player.Name} got a {player.Hand[player.Hand.Count - 1].Value} of {player.Hand[player.Hand.Count - 1].Suit}");
+		}
+		private void SimulateGame(Player player1, Player player2, Deck deck)
+        {
+			while ((player1.Value <= 21 && player2.Value <= 21))
+			{
+				if ((player1.Value < 21 && player2.Value <= 21) && player2.Value <= 21)
+				{
+					PlayerGetCard(player1, deck);
+				}
+				if ((player2.Value < 21 && player1.Value <= 21) && player1.Value <= 21)
+				{
+					PlayerGetCard(player2, deck);
+				}
+				if (player1.Value == 21 && player2.Value == 21)
+				{
+					break;
+				}
+			}
+		}
 		private void CountWhoWin(Player player1, Player player2)
 		{
 			int selection = 0;
-			int winner = player1.Value - player2.Value;
-			if (winner < 0)
+			if (player1.Value > 21 && player2.Value <= 21)
 			{
 				selection = 1;
 			}
-			if (winner > 0)
+			if (player1.Value <= 21 && player2.Value > 21)
 			{
 				selection = 2;
 			}
-			if (player1.Value <= 21 || player2.Value <= 21)
-			{
 				switch (selection)
 				{
-					case (1):
-						Console.WriteLine($"Winner's {player1.Name} with {player1.Value} points");
-						break;
-					case (2):
-						Console.WriteLine($"Winner's {player2.Name} with {player2.Value} points");
-						break;
-					default:
-						Console.WriteLine($"Draw, all of players got {player1.Value}");
-						break;
+				case (1):
+					Console.WriteLine($"Winner's {player2.Name} with {player2.Value} points");
+					break;
+				case (2):
+					Console.WriteLine($"Winner's {player1.Name} with {player1.Value} points");
+					break;
+				default:
+					Console.WriteLine($"Draw, all of players got {player1.Value}");
+					break;
 				}
-			}
-			else
-			{
-				Console.WriteLine($"Lose, {player1.Name} have {player1.Value} and {player2.Name} have {player2.Value}");
-			}
 		}
-		private String SimulateGame(String key)
+		private String BlackJackGame(String key)
 		{
-
+			var deck = new Deck();
+			deck.GenerateDeck();
+			deck.ShuffleDeck();
 			bool stop = true;
-			if(key == "n" || key == "N")
+			if (key == "n" || key == "N")
 			{
 				stop = false;
 			}
 			while (stop)
 			{
-				var player1 = PlayerGetCard("Player1");
-				var player2 = PlayerGetCard("Player2");
-
-				if (player1.Value >= 21 && player2.Value >= 21)
-				{
-					stop = false;
-				}
-
+				var player1 = FirstHand("Player1", deck);
+                var player2 = FirstHand("Player2", deck);
+				SimulateGame(player1, player2, deck);
+                stop = false;
 				if (!stop)
 				{
 					CountWhoWin(player1, player2);
@@ -119,7 +98,7 @@ namespace Blackjack
 
 			while (key != "n" || key != "N")
 			{
-				 key = SimulateGame(key);
+				 key = BlackJackGame(key);
 			}
 		}
 	}
