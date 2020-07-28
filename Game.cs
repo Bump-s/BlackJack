@@ -25,7 +25,7 @@ namespace Blackjack
             Console.WriteLine($"{player.Name} got a {player.Hand[player.Hand.Count - 1].Value} of {player.Hand[player.Hand.Count - 1].Suit}");
         }
 
-        private void SimulateGame(Player player1, Player player2, Deck deck)
+        private void SimulateGameBotVSBot(Player player1, Player player2, Deck deck)
         {
             var blackJack = 21;
             while (player1.Value <= blackJack && player2.Value <= blackJack)
@@ -45,7 +45,7 @@ namespace Blackjack
             }
         }
 
-        private void SG(Player player1, Player player2, Deck deck)
+        private void SimulateGamePlayerVSBot(Player player1, Player player2, Deck deck)
         {
             var blackJack = 21;
             var checkKey = "y";
@@ -98,49 +98,52 @@ namespace Blackjack
             }
         }
 
-        public void StartGame()
+        private void GameModeBotVSBot(Deck deck, string playerName)
+        {
+            var player1 = FirstHand("Bot Black", deck);
+            var player2 = FirstHand("Bot Jack", deck);
+            SimulateGameBotVSBot(player1, player2, deck);
+            CountWhoWin(player1, player2);
+            RestartGame(playerName);
+        }
+
+        private void GameModePlayerVSBot(Deck deck, string playerName)
+        {
+            
+            var player1 = FirstHand(playerName, deck);
+            var player2 = FirstHand("Bot Jack", deck);
+            SimulateGamePlayerVSBot(player1, player2, deck);
+            CountWhoWin(player1, player2);
+            RestartGame(playerName);
+        }
+
+        private void RestartGame(string playerName)
+        {
+            Console.WriteLine("Y - to New game \nN - to Exit");
+            var key = Console.ReadLine();
+
+            if (string.Equals(key, "y", StringComparison.InvariantCultureIgnoreCase))
+            {
+                StartGame(playerName);
+            }
+        }
+        public void StartGame(string playerName)
         {
             Console.WriteLine("Select the game mode\n'1' for Bot vs Bot '2' for Player vs Bot");
             var mode = Console.ReadLine();
             var deck = new Deck();
-            var player1 = new Player("Bot Blak");
-            var player2 = new Player("Bot Jack");
-            switch (int.Parse(mode))
+            if (int.Parse(mode) == 1)
             {
-                case (1):
-                    player1 = FirstHand("Bot Black", deck);
-                    player2 = FirstHand("Bot Jack", deck);
-                    SimulateGame(player1, player2, deck);
-                    CountWhoWin(player1, player2);
-                    Console.WriteLine("Y - to New game \nN - to Exit");
-                    var key = Console.ReadLine();
-
-                    if (string.Equals(key, "y", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        StartGame();
-                    }
-                    break;
-
-                case (2):
-                    Console.WriteLine("Enter your name");
-                    var name = Console.ReadLine();
-                    player1 = FirstHand(name, deck);
-                    player2 = FirstHand("Bot Jack", deck);
-                    SG(player1, player2, deck);
-                    CountWhoWin(player1, player2);
-                    Console.WriteLine("Y - to New game \nN - to Exit");
-                    key = Console.ReadLine();
-
-                    if (string.Equals(key, "y", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        StartGame();
-                    }
-                    break;
-
-                default:
-                    Console.WriteLine("Wrong game mode. Try again.");
-                    StartGame();
-                    break;
+                GameModeBotVSBot(deck, playerName);
+            }
+            if (int.Parse(mode) == 2)
+            {
+                GameModePlayerVSBot(deck, playerName);
+            }
+            if (int.Parse(mode) != 1 && int.Parse(mode) != 2)
+            {
+                Console.WriteLine("Wrong game mode. Try again.");
+                StartGame(playerName);
             }
         }
     }
