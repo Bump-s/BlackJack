@@ -49,8 +49,9 @@ namespace Blackjack
         {
             var blackJack = 21;
             var checkKey = "y";
-            while(player1.Value <= blackJack && player2.Value <= blackJack)
-            {   if (string.Equals(checkKey, "y", StringComparison.InvariantCultureIgnoreCase))
+            while (player1.Value <= blackJack && player2.Value <= blackJack)
+            {
+                if (string.Equals(checkKey, "y", StringComparison.InvariantCultureIgnoreCase))
                 {
                     Console.WriteLine("One more card?\n'Y' - yes 'N' - no");
                     var key = Console.ReadLine();
@@ -73,12 +74,13 @@ namespace Blackjack
 
         private void CountWhoWin(Player player1, Player player2)
         {
+            var blackJack = 21;
             int selection = 0;
-            if (player1.Value > 21 && player2.Value <= 21)
+            if (player1.Value > blackJack && player2.Value <= blackJack)
             {
                 selection = 1;
             }
-            if (player1.Value <= 21 && player2.Value > 21)
+            if (player1.Value <= blackJack && player2.Value > blackJack)
             {
                 selection = 2;
             }

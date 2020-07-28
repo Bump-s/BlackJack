@@ -7,11 +7,11 @@ namespace Blackjack
         public Value Value { get; set; }
         public Suit Suit { get; set; }
 
-        public Card (Value value,Suit suit)
+        public Card(Value value, Suit suit)
         {
-            this.Value = value;
-            this.Suit = suit;
+            Value = value;
+            Suit = suit;
         }
-        
+
     }
 }

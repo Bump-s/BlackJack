@@ -6,12 +6,12 @@ using System.Linq;
 
 namespace Blackjack
 {
-	class Program
-	{
-		static void Main(string[] args)
-		{
-			var game = new Game();
-			game.StartGame();
-		}
-	}
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var game = new Game();
+            game.StartGame();
+        }
+    }
 }
