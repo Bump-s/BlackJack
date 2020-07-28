@@ -12,6 +12,5 @@ namespace Blackjack
             Value = value;
             Suit = suit;
         }
-
     }
 }

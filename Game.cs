@@ -109,7 +109,6 @@ namespace Blackjack
 
         private void GameModePlayerVSBot(Deck deck, string playerName)
         {
-            
             var player1 = FirstHand(playerName, deck);
             var player2 = FirstHand("Bot Jack", deck);
             SimulateGamePlayerVSBot(player1, player2, deck);
@@ -127,6 +126,7 @@ namespace Blackjack
                 StartGame(playerName);
             }
         }
+
         public void StartGame(string playerName)
         {
             Console.WriteLine("Select the game mode\n'1' for Bot vs Bot '2' for Player vs Bot");
